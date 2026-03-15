@@ -12,6 +12,7 @@ import Assessment      from './pages/Assessment';
 import ClusterCalculator from './pages/ClusterCalculator';
 import Careers         from './pages/Careers';
 import Courses         from './pages/Courses';
+import Recommendations from './pages/Recommendations';  // Add this import
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
           <Route path="/calculator" element={<ProtectedRoute><ClusterCalculator /></ProtectedRoute>} />
           <Route path="/careers"   element={<ProtectedRoute><Careers /></ProtectedRoute>} />
           <Route path="/courses"   element={<ProtectedRoute><Courses /></ProtectedRoute>} />
+          <Route path="/recommendations" element={<ProtectedRoute><Recommendations /></ProtectedRoute>} /> 
 
           {/* Fallback */}
           <Route path="*" element={<Navigate to="/" replace />} />

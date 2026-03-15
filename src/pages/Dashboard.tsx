@@ -122,10 +122,6 @@ const Dashboard: React.FC = () => {
     }
   };
 
-  const handleViewAllRecommendations = () => {
-    window.location.href = '/recommendations';
-  };
-
   const firstName = user?.first_name || user?.username || 'Student';
 
   // Check if prerequisites are met
@@ -253,13 +249,13 @@ const Dashboard: React.FC = () => {
         <div className="mb-8">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-gray-900">Your Personalized Recommendations</h2>
-            <button
-              onClick={handleViewAllRecommendations}
+            <Link
+              to="/recommendations"
               className="text-indigo-600 hover:text-indigo-800 text-sm font-medium flex items-center"
             >
               View All
               <ChevronRight className="w-4 h-4 ml-1" />
-            </button>
+            </Link>
           </div>
 
           {/* Profile Summary */}
@@ -283,6 +279,14 @@ const Dashboard: React.FC = () => {
                   {recommendations.student_profile.strong_subjects.slice(0, 3).join(', ')}
                 </span>
               </div>
+              {recommendations.student_profile.matched_career_fields && (
+                <div>
+                  <span className="text-xs text-gray-500 block">Career Fields</span>
+                  <span className="font-medium text-amber-700">
+                    {recommendations.student_profile.matched_career_fields.slice(0, 2).join(', ')}
+                  </span>
+                </div>
+              )}
             </div>
           </div>
 
@@ -291,7 +295,7 @@ const Dashboard: React.FC = () => {
             {recommendations.recommended_courses.slice(0, 3).map((course) => (
               <Link
                 key={course.course_id}
-                to={`/courses/${course.course_id}`}
+                to="/recommendations"
                 className="bg-white border border-gray-200 rounded-xl p-4 hover:shadow-md transition-shadow"
               >
                 <div className="flex items-start justify-between mb-2">
@@ -300,9 +304,22 @@ const Dashboard: React.FC = () => {
                     {Math.round(course.score * 100)}% match
                   </span>
                 </div>
+                
+                {/* Career fields preview */}
+                {recommendations.student_profile.matched_career_fields && (
+                  <div className="mb-2 flex flex-wrap gap-1">
+                    {recommendations.student_profile.matched_career_fields.slice(0, 2).map((field, i) => (
+                      <span key={i} className="text-xs bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded-full">
+                        {field}
+                      </span>
+                    ))}
+                  </div>
+                )}
+                
                 <p className="text-xs text-gray-500 mb-2 line-clamp-2">
                   {course.match_reasons.slice(0, 2).join(' • ')}
                 </p>
+                
                 <div className="flex items-center text-indigo-600 text-xs font-medium">
                   <span>View details</span>
                   <ArrowRight className="w-3 h-3 ml-1" />

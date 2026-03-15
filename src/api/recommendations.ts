@@ -32,6 +32,16 @@ export const getRecommendations = async (params?: {
   return data;
 };
 
+export const getDetailedRecommendations = async () => {
+  const { data } = await apiClient.get('/api/recommendations/detailed/');
+  return data;
+};
+
+export const getRecommendationCourseDetails = async (id: number) => {
+  const { data } = await apiClient.get(`/api/recommendations/${id}/course-details/`);
+  return data;
+};
+
 export const checkRecommendationsStatus = async () => {
   try {
     const { data } = await apiClient.get('/api/recommendations/status/');
