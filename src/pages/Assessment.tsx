@@ -45,7 +45,7 @@ const Assessment: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
   const [alert, setAlert] = useState<{ type: 'success' | 'error'; msg: string } | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
-  const [progress, setProgress] = useState<PsychometricProgress | null>(null);
+  const [, setProgress] = useState<PsychometricProgress | null>(null);
   const [results, setResults] = useState<ResultData | null>(null);
   const [showResults, setShowResults] = useState(false);
 
