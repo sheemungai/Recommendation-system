@@ -46,7 +46,7 @@ const Register: React.FC = () => {
     }
     setLoading(true);
     try {
-      await register(form);
+      await register({...form, user_type:'student'});
       navigate('/dashboard');
     } catch (err: unknown) {
       const axiosErr = err as { response?: { data?: Record<string, string[]> } };

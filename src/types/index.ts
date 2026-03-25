@@ -26,6 +26,7 @@ export interface RegisterPayload {
   password2: string;
   first_name: string;
   last_name: string;
+  user_type?:string;
 }
 
 export interface LoginPayload {
