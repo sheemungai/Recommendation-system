@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link} from "react-router-dom";
 import {
   Plus,
   Trash2,
@@ -98,7 +98,6 @@ const gradeColor = (grade: GradeChoice): string => {
 };
 
 const Grades: React.FC = () => {
-  const navigate = useNavigate();
   const { hasProfile, loading: profileLoading } = useProfileCheck();
 
   const [gradesData, setGradesData] = useState<GradesResponse | null>(null);
