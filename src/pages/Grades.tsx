@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { 
   Plus, Trash2, RefreshCw, BookOpen, User, 
   Pencil, CheckCircle, X, AlertCircle 
@@ -23,7 +24,7 @@ const SUBJECTS: { value: SubjectChoice; label: string; group: string }[] = [
   { value: 'CRE', label: 'CRE', group: 'Humanities' },
   { value: 'GEOGRAPHY', label: 'Geography', group: 'Humanities' },
   { value: 'FRENCH', label: 'French', group: 'Languages' },
-  {value: 'GERMAN', label: 'German', group: 'Languages' },
+  { value: 'GERMAN', label: 'German', group: 'Languages' },
   { value: 'ARABIC', label: 'Arabic', group: 'Languages' },
   { value: 'HOME_SCIENCE', label: 'Home Science', group: 'Technical' },
   { value: 'AGRICULTURE', label: 'Agriculture', group: 'Technical' },
@@ -76,6 +77,7 @@ const gradeColor = (grade: GradeChoice): string => {
 };
 
 const Grades: React.FC = () => {
+  const navigate = useNavigate();
   const { hasProfile, loading: profileLoading } = useProfileCheck();
   
   const [gradesData, setGradesData] = useState<GradesResponse | null>(null);
@@ -276,8 +278,8 @@ const Grades: React.FC = () => {
               </p>
               
               <button
-                onClick={() => window.location.href = '/profile'}
-                className="bg-yellow-600 text-white px-6 py-2 rounded-lg hover:bg-yellow-700"
+                onClick={() => navigate('/profile')}
+                className="bg-yellow-600 text-white px-6 py-2 rounded-lg hover:bg-yellow-700 transition-colors"
               >
                 Create Your Profile
               </button>
@@ -501,7 +503,7 @@ const Grades: React.FC = () => {
                                       <Trash2 className="w-3.5 h-3.5" />
                                     )}
                                   </button>
-                              </>
+                                </>
                               )}
                             </div>
                           </td>
