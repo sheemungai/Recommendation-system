@@ -15,6 +15,7 @@ const Profile: React.FC = () => {
   const [editing, setEditing] = useState(false);
   const [saving, setSaving] = useState(false);
   const [alert, setAlert] = useState<{ type: 'success' | 'error'; msg: string } | null>(null);
+  const [dateError, setDateError] = useState<string>('');
 
   const [form, setForm] = useState({
     address: '',
@@ -33,14 +34,61 @@ const Profile: React.FC = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  // Get today's date in YYYY-MM-DD format for max attribute
+  const getTodayDate = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
+  const validateDate = (dateString: string) => {
+    if (!dateString) return true;
+    
+    const selectedDate = new Date(dateString);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    
+    // Check if date is in the future
+    if (selectedDate > today) {
+      setDateError('Date of birth cannot be in the future');
+      return false;
+    }
+    
+    // Minimum age validation - must be at least 16 years old
+    const minAgeDate = new Date();
+    minAgeDate.setFullYear(minAgeDate.getFullYear() - 16);
+    if (selectedDate > minAgeDate) {
+      setDateError('Student must be at least 16 years old');
+      return false;
+    }
+    
+    setDateError('');
+    return true;
+  };
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
-    setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+    const { name, value } = e.target;
+    
+    if (name === 'dob') {
+      validateDate(value);
+    }
+    
+    setForm((f) => ({ ...f, [name]: value }));
   };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate date before submitting
+    if (!validateDate(form.dob)) {
+      setAlert({ type: 'error', msg: 'Please enter a valid date of birth' });
+      return;
+    }
+    
     setSaving(true);
     try {
       if (profile) {
@@ -138,11 +186,15 @@ const Profile: React.FC = () => {
                     id="dob"
                     name="dob"
                     type="date"
-                    className="input-field"
+                    className={`input-field ${dateError ? 'border-red-500 focus:ring-red-500' : ''}`}
                     value={form.dob}
                     onChange={handleChange}
+                    max={getTodayDate()}
                     required
                   />
+                  {dateError && (
+                    <p className="mt-1 text-sm text-red-600">{dateError}</p>
+                  )}
                 </div>
                 <div>
                   <label className="label" htmlFor="gender">Gender</label>
@@ -179,7 +231,7 @@ const Profile: React.FC = () => {
               <div className="flex items-center space-x-3 pt-2">
                 <button
                   type="submit"
-                  disabled={saving}
+                  disabled={saving || !!dateError}
                   className="btn-primary flex items-center space-x-2"
                 >
                   {saving ? (
