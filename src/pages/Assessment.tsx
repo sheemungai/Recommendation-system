@@ -116,7 +116,7 @@ const Assessment: React.FC = () => {
     <Layout>
       <PageHeader
         title="Psychometric Assessment"
-        subtitle="Discover your personality type using the RIASEC model and Big Five traits"
+        subtitle="Complete 18 questions to discover your RIASEC career personality type"
         action={
           showResults ? (
             <button
@@ -136,6 +136,25 @@ const Assessment: React.FC = () => {
         </div>
       )}
 
+      {/* Info box */}
+      {!showResults && questions.length > 0 && (
+        <div className="mb-6 bg-blue-50 border border-blue-200 rounded-xl p-4">
+          <div className="flex items-start space-x-3">
+            <div className="flex-shrink-0">
+              <div className="w-5 h-5 text-blue-600">📋</div>
+            </div>
+            <div>
+              <p className="text-sm text-blue-800 font-medium">
+                Quick assessment - only {questions.length} questions
+              </p>
+              <p className="text-xs text-blue-700 mt-0.5">
+                Answer honestly. There are no right or wrong answers!
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {showResults && results ? (
         /* ── Results view ── */
         <div className="space-y-6">
@@ -144,14 +163,14 @@ const Assessment: React.FC = () => {
               <CheckCircle className="w-7 h-7 text-green-600" />
               <div>
                 <h3 className="font-bold text-green-800 text-lg">Assessment Complete!</h3>
-                <p className="text-green-700 text-sm">Here are your personality profile results.</p>
+                <p className="text-green-700 text-sm">Here are your RIASEC personality profile results.</p>
               </div>
             </div>
           </div>
 
           <h2 className="text-lg font-semibold text-gray-900 flex items-center space-x-2">
             <BarChart2 className="w-5 h-5 text-primary-600" />
-            <span>Your Profile Results</span>
+            <span>Your RIASEC Profile Results</span>
           </h2>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

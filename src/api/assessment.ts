@@ -1,6 +1,10 @@
 import apiClient from './client';
 import type { PsychometricQuestion, PsychometricResponse, PsychometricProgress } from '../types';
 
+/**
+ * Fetches all active psychometric questions
+ * @returns {Promise<PsychometricQuestion[]>} 18 questions (3 per RIASEC category)
+ */
 export const getQuestions = async (category?: string) => {
   const params = category ? { category } : {};
   const { data } = await apiClient.get('/api/assessment/questions/', { params });

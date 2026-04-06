@@ -31,7 +31,7 @@ const quickLinks = [
     to: '/assessment',
     icon: ClipboardList,
     label: 'Psychometric Test',
-    desc: 'Complete the RIASEC & Big Five assessment',
+    desc: '18-question RIASEC career personality assessment',
     color: 'bg-purple-600',
   },
   {
@@ -201,7 +201,7 @@ const Dashboard: React.FC = () => {
                 Your psychometric assessment is {progress.percentage}% complete.
               </p>
               <p className="text-xs text-purple-600 mt-0.5">
-                {progress.answered}/{progress.total_questions} questions answered.
+                {progress.answered}/{progress.total_questions} questions answered • Complete 18 questions for personalized recommendations
               </p>
             </div>
             <Link to="/assessment" className="btn-primary text-sm px-4 py-1.5 whitespace-nowrap" style={{ background: '#7c3aed' }}>
@@ -219,7 +219,7 @@ const Dashboard: React.FC = () => {
                 You're all set! Ready to get personalized career recommendations.
               </p>
               <p className="text-xs text-green-600 mt-0.5">
-                Based on your grades and personality assessment.
+                Based on your KCSE grades and 18-question personality assessment.
               </p>
             </div>
             <button
