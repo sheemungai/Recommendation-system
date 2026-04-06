@@ -4,6 +4,7 @@ import {
   BookOpen, ClipboardList, Calculator, Briefcase,
   ArrowRight, AlertTriangle, User,
   TrendingUp, Sparkles, ChevronRight, Clock,
+  Shield,  // ← Added
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import Layout from '../components/Layout';
@@ -51,7 +52,7 @@ const quickLinks = [
 ];
 
 const Dashboard: React.FC = () => {
-  const { user } = useAuth();
+  const { user, isAdmin } = useAuth();  // ← Added isAdmin
   const [gradesData, setGradesData] = useState<GradesResponse | null>(null);
   const [progress, setProgress] = useState<PsychometricProgress | null>(null);
   const [recommendations, setRecommendations] = useState<RecommendationsResponse | null>(null);
@@ -93,7 +94,6 @@ const Dashboard: React.FC = () => {
       const hasRecs = recStatus.status === 'fulfilled' && recStatus.value?.exists;
 
       if (hasGrades && hasPsychometric && !hasRecs) {
-        // Auto-generate recommendations
         handleGenerateRecommendations(false);
       }
 
@@ -113,7 +113,6 @@ const Dashboard: React.FC = () => {
       setRecommendations(results);
       setRecommendationsStatus({ exists: true, lastGenerated: new Date().toISOString() });
       
-      // Show success message (you can add a toast notification here)
       console.log('Recommendations generated successfully');
     } catch (err: any) {
       setError(err.message || 'Failed to generate recommendations');
@@ -124,7 +123,6 @@ const Dashboard: React.FC = () => {
 
   const firstName = user?.first_name || user?.username || 'Student';
 
-  // Check if prerequisites are met
   const hasGrades = gradesData?.data?.length ? gradesData.data.length > 0 : false;
   const hasPsychometric = progress?.is_complete || false;
   const prerequisitesMet = hasGrades && hasPsychometric;
@@ -305,7 +303,6 @@ const Dashboard: React.FC = () => {
                   </span>
                 </div>
                 
-                {/* Career fields preview */}
                 {recommendations.student_profile.matched_career_fields && (
                   <div className="mb-2 flex flex-wrap gap-1">
                     {recommendations.student_profile.matched_career_fields.slice(0, 2).map((field, i) => (
@@ -353,6 +350,33 @@ const Dashboard: React.FC = () => {
           </Link>
         ))}
       </div>
+
+      {/* ========== ADMIN SECTION - Only visible to admin users ========== */}
+      {isAdmin && (
+        <div className="mt-8">
+          <h2 className="text-lg font-semibold text-gray-900 mb-4">Admin Actions</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <a
+              href="https://recommender-backend-ou3s.onrender.com/admin"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="card hover:shadow-md transition-all group border border-gray-200 hover:border-red-300"
+            >
+              <div className="w-10 h-10 rounded-xl bg-red-600 flex items-center justify-center mb-3">
+                <Shield className="w-5 h-5 text-white" />
+              </div>
+              <h3 className="font-semibold text-gray-900 mb-1 group-hover:text-red-700 transition-colors">
+                Admin Panel
+              </h3>
+              <p className="text-xs text-gray-500 mb-3">Manage users, questions, courses, and view analytics</p>
+              <div className="flex items-center text-red-600 text-xs font-medium">
+                <span>Go to admin dashboard</span>
+                <ArrowRight className="w-3 h-3 ml-1 group-hover:translate-x-1 transition-transform" />
+              </div>
+            </a>
+          </div>
+        </div>
+      )}
 
       {/* Last generated timestamp */}
       {recommendationsStatus?.lastGenerated && (
